@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import reducer from './reducer'
+import {klik} from './reducer'
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
 const store = createStore(
-    reducer
+    klik,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 )
 
 ReactDOM.render(

@@ -8,19 +8,20 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-       <Container/>
+        <Container />
       </div>
     );
   }
 }
 
 
-export const klik =  (state) => {
-    return state
+export const klik = (state) => {
+  return state
 }
 
-export const data =  (state) => {
-  return " Bimbo ";
+export const data = (state = ' Bert ') => {
+  console.log('reducer,data=', state);
+  return state;
 }
 
 export default App;

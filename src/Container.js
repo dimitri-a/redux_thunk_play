@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {Dumb} from './Dumb';
 
 const someData = (state) => {
-  return {data: 'boer'};
+  return {data: state};
 }
 
 const Container = connect(someData,null)(Dumb)

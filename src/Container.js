@@ -1,9 +1,12 @@
 import React from 'react';
-export class  Container extends React.Component
-{
-  render(){
-    return (
-      <div>Hello frmo container</div>
-    )
-  }
+
+import { connect } from 'react-redux';
+import {Dumb} from './Dumb';
+
+const someData = (state) => {
+  return {data: 'boer'};
 }
+
+const Container = connect(someData,null)(Dumb)
+
+export default Container

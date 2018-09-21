@@ -16,7 +16,7 @@ class App extends Component {
 
 
 export const klik =  (state) => {
-  return state
+    return state
 }
 
 export default App;

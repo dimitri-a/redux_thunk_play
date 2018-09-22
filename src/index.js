@@ -8,49 +8,48 @@ import { connect } from 'react-redux';
 
 
 class Dumb extends React.Component {
-  constructor(props)
-  {
-      super(props);
-      console.log('props',props)
+  constructor(props) {
+    super(props);
+    console.log('Dumb props passed on from container:', props)
   }
 
-  handleClick =()=>{
-      console.log('props',this.props)
-      this.props.geklikt();
+  handleClick = () => {
+    //console.log('Dumb props passed on from container:', this.props)
+    this.props.geklikt();
   }
 
   render() {
-      return (
+    return (
       <div>
-          hi there from Dumb
+        hi there from Dumb
 
           <button onClick={this.handleClick}>hier</button>
-          
+
       </div>
-      )
+    )
   }
 }
 
 const someData = (state) => {
-  return {data: state};
+  return { data: state };
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators(
+const bla = dispatch => bindActionCreators(
   {
     geklikt
   },
   dispatch,
 )
 
-const Container = connect(null,mapDispatchToProps)(Dumb)
+const Container = connect(null, bla)(Dumb)
 
 
 //reducer
 const klik = (state, action) => {
-  if (action.type == 'GEKLIKT') { }
-  console.log('reducer: klik');
-
-  return state
+  if (action.type == 'GEKLIKT') {
+    console.log('reducer says GEKLIKT');
+    return null
+  }
 }
 
 //reducer
@@ -60,7 +59,7 @@ const data = (state = ' Bert ') => {
 }
 
 //actioncreator
-const geklikt = ()=>({
+const geklikt = () => ({
   type: 'GEKLIKT',
   data: 'bla'
 });
@@ -82,10 +81,10 @@ const store = createStore(
 )
 
 ReactDOM.render(
-    <Provider store={store}>
-      <App />
-    </Provider>,
-    document.getElementById('root')
-  );
-  
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+);
+
 registerServiceWorker();

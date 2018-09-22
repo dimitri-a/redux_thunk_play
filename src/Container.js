@@ -1,12 +1,17 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
-import {Dumb} from './Dumb';
+import Dumb from './Dumb';
+import {geklikt} from './App.js';
 
 const someData = (state) => {
   return {data: state};
 }
 
-const Container = connect(someData,null)(Dumb)
+const actiontime = {
+  geklikt
+}
+
+const Container = connect(null,actiontime)(Dumb)
 
 export default Container

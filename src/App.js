@@ -15,13 +15,25 @@ class App extends Component {
 }
 
 
-export const klik = (state) => {
+//reducer
+export const klik = (state, action) => {
+  if (action.type == 'GEKLIKT') { }
+  console.log('reducer: klik');
+
   return state
+
 }
 
+//reducer
 export const data = (state = ' Bert ') => {
-  console.log('reducer,data=', state);
+  //console.log('reducer,data=', state);
   return state;
 }
+
+//actioncreator
+export const geklikt = () => ({
+  type: 'GEKLIKT',
+  data: 'bla'
+});
 
 export default App;

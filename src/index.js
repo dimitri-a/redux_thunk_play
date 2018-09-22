@@ -2,9 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
-import { createStore, bindActionCreators } from 'redux';
+import { createStore, bindActionCreators, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { connect } from 'react-redux';
+import thunk from 'redux-thunk';
 
 
 class Dumb extends React.Component {
@@ -15,7 +16,7 @@ class Dumb extends React.Component {
 
   handleClick = () => {
     //console.log('Dumb props passed on from container:', this.props)
-    this.props.geklikt();
+    this.props.getRepos();
   }
 
   render() {
@@ -36,7 +37,8 @@ const someData = (state) => {
 
 const bla = dispatch => bindActionCreators(
   {
-    geklikt
+    geklikt,
+    getRepos
   },
   dispatch,
 )
@@ -64,6 +66,22 @@ const geklikt = () => ({
   data: 'bla'
 });
 
+//thunk
+const getRepos = () =>dispatch => {
+  try {
+    const url = `https://api.github.com/users/reduxjs/repos?sort=updated`;
+    fetch(url)
+      .then(response => response.json())
+      .then(json => {
+        console.log('thunk: getrepos data=',json);
+        //dispatch(addRepos(json))
+      })
+
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 class App extends React.Component {
   render() {
     return (
@@ -78,6 +96,7 @@ class App extends React.Component {
 const store = createStore(
   klik,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+  applyMiddleware(thunk)
 )
 
 ReactDOM.render(

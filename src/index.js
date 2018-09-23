@@ -67,20 +67,22 @@ const geklikt = () => ({
 });
 
 //thunk
-const getRepos = () =>dispatch => {
-  try {
-    const url = `https://api.github.com/users/reduxjs/repos?sort=updated`;
-    fetch(url)
-      .then(response => response.json())
-      .then(json => {
-        console.log('thunk: getrepos data=',json);
-        //dispatch(addRepos(json))
-      })
+const GET_REPOS = "GET_REPOS";
 
-  } catch (error) {
-    console.error(error);
-  }
+export function getRepos() {
+    return function action(dispatch) {
+     // dispatch({type: GET_REPOS})
+     const url = `https://api.github.com/users/reduxjs/repos?sort=updated`;
+     const request = fetch(url);
+     return request.then(response => response.json())
+      .then(json => {
+          console.log("thunk: getrepos data=", json);
+      })
+     .then(err => {
+          //console.log(“error”, err);
+     });
 };
+}
 
 class App extends React.Component {
   render() {

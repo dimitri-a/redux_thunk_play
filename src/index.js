@@ -6,6 +6,7 @@ import { createStore, bindActionCreators, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { connect } from 'react-redux';
 import thunk from 'redux-thunk';
+import { logger } from 'redux-logger'
 
 
 class Dumb extends React.Component {
@@ -35,15 +36,7 @@ const someData = (state) => {
   return { data: state };
 }
 
-const bla = dispatch => bindActionCreators(
-  {
-    geklikt,
-    getRepos
-  },
-  dispatch,
-)
-
-const Container = connect(null, bla)(Dumb)
+ const Container = connect(null, {getRepos})(Dumb)
 
 
 //reducer
@@ -76,7 +69,8 @@ export function getRepos() {
      const request = fetch(url);
      return request.then(response => response.json())
       .then(json => {
-          console.log("thunk: getrepos data=", json);
+          console.log("thunk getRepos called: getrepos data=", json);
+          dispatch(geklikt())
       })
      .then(err => {
           //console.log(“error”, err);

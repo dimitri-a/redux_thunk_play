@@ -6,7 +6,6 @@ import { createStore, bindActionCreators, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { connect } from 'react-redux';
 import thunk from 'redux-thunk';
-import { logger } from 'redux-logger'
 
 
 class Dumb extends React.Component {
@@ -16,67 +15,63 @@ class Dumb extends React.Component {
   }
 
   handleClick = () => {
-    //console.log('Dumb props passed on from container:', this.props)
-    this.props.getRepos();
+    console.log(this.props)
+    this.props.getData();
   }
 
   render() {
     return (
       <div>
-        hi there from Dumb
-
-          <button onClick={this.handleClick}>hier</button>
-
+        <button onClick={this.handleClick}>hier</button>
+        <ul>
+          {this.props.data && this.props.data.map(item => <li>item.name</li>)}
+        </ul>
       </div>
     )
   }
 }
 
-const someData = (state) => {
-  return { data: state };
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    getData,
+  },
+  dispatch,
+)
+const bla = (state) => ({
+  data: state.myData
+});
+const Container = connect(bla, mapDispatchToProps)(Dumb)
+
+
+const url = `https://api.github.com/users/reduxjs/repos?sort=updated`;
+
+const getData = () => dispatch => {
+  fetch(url).then(response => response.json())
+    .then(
+      json => {
+        debugger
+        console.log('thunk returning json:', json);
+        dispatch(receivedData(json));
+      }
+    )
 }
 
- const Container = connect(null, {getRepos})(Dumb)
-
+//action
+const receivedData = (data) => ({
+  type: 'RECEIVED_DATA',
+  data
+});
 
 //reducer
-const klik = (state, action) => {
-  if (action.type == 'GEKLIKT') {
-    console.log('reducer says GEKLIKT');
-    return null
+const myData = (state = [], action) => {
+  debugger;
+  if (action.type === 'RECEIVED_DATA') {
+    return action.data;
   }
-}
-
-//reducer
-const data = (state = ' Bert ') => {
-  //console.log('reducer,data=', state);
   return state;
 }
 
-//actioncreator
-const geklikt = () => ({
-  type: 'GEKLIKT',
-  data: 'bla'
-});
 
-//thunk
-const GET_REPOS = "GET_REPOS";
-
-export function getRepos() {
-    return function action(dispatch) {
-     // dispatch({type: GET_REPOS})
-     const url = `https://api.github.com/users/reduxjs/repos?sort=updated`;
-     const request = fetch(url);
-     return request.then(response => response.json())
-      .then(json => {
-          console.log("thunk getRepos called: getrepos data=", json);
-          dispatch(geklikt())
-      })
-     .then(err => {
-          //console.log(“error”, err);
-     });
-};
-}
 
 class App extends React.Component {
   render() {
@@ -90,7 +85,7 @@ class App extends React.Component {
 
 
 const store = createStore(
-  klik,
+  myData,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   applyMiddleware(thunk)
 )

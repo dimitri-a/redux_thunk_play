@@ -8,49 +8,62 @@ import { connect } from 'react-redux';
 import thunk from 'redux-thunk';
 
 
-const action = type => store.dispatch({type})
+const action = type => store.dispatch({ type })
 
 
-const Counter = ({onIncrement,value}) =>{
+const Counter = ({ onIncrement,onDecrement, val }) => {
   return <div>
-    {value}
+    {val}
     <button onClick={onIncrement}>increase</button>
+    <button onClick={onDecrement}>decrease</button>
   </div>
 }
 
 
-export const increment = (type) => ({
-  type:'INCREMENT'
+export const increment = () => ({
+  type: 'INCREMENT'
 })
 
+export const decrement = () => ({
+  type: 'DECREMENT'
+})
 
-const reducer=(state = 0, action) => {
+const reducer = (state = 0, action) => {
+  debugger
   switch (action.type) {
 
-  case 'INCREMENT':
-  console.log('reducer: increment')
-    return state +1
+    case 'INCREMENT':
+      console.log('reducer: increment')
+      return state + 1
 
-  default:
-    return state
+      case 'DECREMENT':
+      console.log('reducer: increment')
+      return state -1
+
+    default:
+      return state
   }
 }
 
+const store = createStore(
+  reducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
 
-ReactDOM.render(
-  <Provider store={store}>
-    <Counter
-    onIncrement={() => action(increment)}
-     />
-  </Provider>,
+const render = () => ReactDOM.render(
+  <Counter val={store.getState()}
+    onIncrement={()=>store.dispatch(increment())}
+    onDecrement={()=>store.dispatch(decrement())}
+  />
+  ,
   document.getElementById('root')
 );
 
-registerServiceWorker();
 
 
-const store = createStore(
-  reducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-  applyMiddleware(thunk)
-)
+store.subscribe(render);
+render();
+
+
+
+

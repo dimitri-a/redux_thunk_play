@@ -25,7 +25,7 @@ class Dumb extends React.Component {
         <button onClick={this.handleClick}>hier</button>
 
         <ul>
-          {this.props.users.data.map(user => <li>{user.name}</li>)}
+          {this.props.users.map(user => <li>{user.name}</li>)}
         </ul>
 
 
@@ -34,17 +34,12 @@ class Dumb extends React.Component {
   }
 }
 
-const bla = dispatch =>
-  bindActionCreators(
-    {
-      geklikt,
-      getRepos
-    },
-    dispatch
-  );
 
-const mydata = (state) => ({
-  users: state
+const bla = dispatch =>
+  bindActionCreators({ getRepos }, dispatch)
+
+const mydata = (state=[]) => ({
+  users: state.data
 })
 
 const Container = connect(
@@ -52,18 +47,10 @@ const Container = connect(
   bla
 )(Dumb);
 
-// //reducer
-// const klik = (state={}, action) => {
-//   if (action.type == "GEKLIKT") {
-//     console.log("reducer says GEKLIKT");
-//     return null;
-//   }
-// };
 
 //data reducer
 const data = (state = [], action) => {
-  //console.log('reducer,data=', state);
-  debugger
+  console.log('reducer,data=', state);
   if (action.type === 'RECEIVED_DATA') {
     return action.payload;
   }
@@ -72,14 +59,7 @@ const data = (state = [], action) => {
 };
 
 
-
-
 //actioncreator
-const geklikt = () => ({
-  type: "GEKLIKT",
-  data: "bla"
-});
-
 export const received_data = (data) => ({
   type: 'RECEIVED_DATA',
   payload: data

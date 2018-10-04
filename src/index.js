@@ -6,40 +6,58 @@ import { Provider } from "react-redux";
 import { connect } from "react-redux";
 import thunk from "redux-thunk";
 
-const Dumb = ({ users }) => {
-  console.log('users', users)
+
+const Dumb = ({ users, getData }) => {
   return (
     <div>
-      <ul>
-        {users.map(user => <li>{user}</li>)}
-      </ul>
+      This is Dumb
+      <button onClick={getData}>Go</button>
+      {users.map(user => <li>{user}</li>)}
     </div>
   )
 }
 
-const data = state => ({
+const mydata = (state) => ({
   users: state
 })
 
 
-const ConnectedDumb =connect(data, null)(Dumb)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getData: () => {
+      dispatch(getData())
+    }
+  }
+}
 
+
+const ConnectedDumb = connect(mydata, mapDispatchToProps)(Dumb)
+
+
+//https://jsonplaceholder.typicode.com/users
 
 class Container extends React.Component {
   render() {
-
     return (
       <div>
-        <ConnectedDumb></ConnectedDumb>
+        <ConnectedDumb />
       </div>
     )
   }
 }
 
+const getData = () => dispatch => {
+  console.log('getData called');
+  fetch('https://jsonplaceholder.typicode.com/users')
+    .then(response => response.json)
+    .then(data => {
+        dispatch(received_data(data))
+      })
+    
+}
 
-//data reducer
-
-const users = (state = ['Jack'], action) => {
+const users = (state = ['Billy'], action) => {
+  debugger;
   switch (action.type) {
     case 'RECEIVED_DATA':
       return action.data
@@ -49,32 +67,10 @@ const users = (state = ['Jack'], action) => {
   }
 }
 
-
-
-//actioncreator
-export const receivedData = (payload) => ({
+const received_data = (data) => ({
   type: 'RECEIVED_DATA',
-  payload
+  data
 })
-
-
-//thunk
-const getData = () => dispatch => {
-  debugger
-  fetch('https://jsonplaceholder.typicode.com/users').then(response => response.json).then(
-    data => dispatch(receivedData(data))
-  )
-}
-
-class App extends React.Component {
-  render() {
-    return (
-      <div className="App">
-        <Container />
-      </div>
-    );
-  }
-}
 
 
 
@@ -86,7 +82,7 @@ const store = createStore(
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Container />
   </Provider>
   ,
   document.getElementById("root")

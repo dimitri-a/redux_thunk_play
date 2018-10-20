@@ -34,7 +34,7 @@ const mapDispatchToProps = (dispatch) => {
 const ConnectedDumb = connect(mydata, mapDispatchToProps)(Dumb)
 
 
-//https://jsonplaceholder.typicode.com/users
+//https://jsonplaceholder.typicode.com/usersfsdfsdf
 
 class Container extends React.Component {
   render() {

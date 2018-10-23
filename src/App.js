@@ -1,71 +1,51 @@
-// import React, { Component } from 'react';
-// import logo from './logo.svg';
-// import './App.css';
-// import { connect } from 'react-redux';
+import React from 'react';
+import Pagination from './Pagination';
 
+class App extends React.Component {
+    constructor() {
+        super();
 
-// class App extends Component {
-//   render() {
-//     return (
-//       <div className="App">
-//         <Container />
-//       </div>
-//     );
-//   }
-// }
+        // an example array of items to be paged
+        var exampleItems = [...Array(150).keys()].map(i => ({ id: (i+1), name: 'Item ' + (i+1) }));
 
-// const someData = (state) => {
-//   return {data: state};
-// }
+        this.state = {
+            exampleItems: exampleItems,
+            pageOfItems: []
+        };
 
-// const actiontime = {
-//   geklikt
-// }
+        // bind function in constructor instead of render (https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-bind.md)
+        this.onChangePage = this.onChangePage.bind(this);
+    }
 
-// const Container = connect(null,actiontime)(Dumb)
+    onChangePage(pageOfItems) {
+        // update state with new page of items
+        this.setState({ pageOfItems: pageOfItems });
+    }
 
-// class Dumb extends React.Component {
-//     constructor(props)
-//     {
-//         super(props);
-//         console.log('props',props)
-//     }
+    render() {
+        return (
+            <div>
+                <div className="container">
+                    <div className="text-center">
+                        <h1>React - Pagination Example with logic like Google</h1>
+                        {this.state.pageOfItems.map(item =>
+                            <div key={item.id}>{item.name}</div>
+                        )}
+                        <Pagination items={this.state.exampleItems} onChangePage={this.onChangePage} />
+                    </div>
+                </div>
+                <hr />
+                <div className="credits text-center">
+                    <p>
+                        <a href="http://jasonwatmore.com/post/2017/03/14/react-pagination-example-with-logic-like-google" target="_top">React - Pagination Example with Logic like Google</a>
+                    </p>
+                    <p>
+                        <a href="http://jasonwatmore.com" target="_top">JasonWatmore.com</a>
+                    </p>
+                </div>
+            </div>
+        );
+    }
+}
 
-//     handleClick =()=>{
-//         console.log('props',this.props)
-//         this.props.geklikt();
-//     }
-
-//     render() {
-//         return (
-//         <div>
-//             hi there from Dumb
-
-//             <button onClick={this.handleClick}>hier</button>
-            
-//         </div>
-//         )
-//     }
-// }
-// //reducer
-// const klik = (state, action) => {
-//   if (action.type == 'GEKLIKT') { }
-//   console.log('reducer: klik');
-
-//   return state
-// }
-
-// //reducer
-// const data = (state = ' Bert ') => {
-//   //console.log('reducer,data=', state);
-//   return state;
-// }
-
-// //actioncreator
-// const geklikt = ()=>({
-//   type: 'GEKLIKT',
-//   data: 'bla'
-// });
-
-// export default App;
-
+export default App;
